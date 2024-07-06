@@ -1,4 +1,4 @@
-class_name KeyValues extends Node
+class_name KeyValues extends Resource
 
 ## Class for handling data from a Valve KeyValues file
 ##
@@ -118,6 +118,9 @@ func _read_element(contents: String):
 				stri += 1
 	
 	return elements
+
+func _init():
+	_root = KV1Element.new()
 
 func parse(contents: String):
 	stri = 0
