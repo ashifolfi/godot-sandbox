@@ -40,14 +40,11 @@ func read_file(path: String) -> VMF:
 		return self
 
 	var contents = FileAccess.get_file_as_string(path)
-	
-	var _read_entity = func():
-		print("Read entity block!")
-		pass
-	
-	for i in range(0, contents.length()):
-		pass
-	
+	var kv = KeyValues.new()
+	kv.parse(contents)
+
+
+
 	# lol. lmao even.
 	return self
 
