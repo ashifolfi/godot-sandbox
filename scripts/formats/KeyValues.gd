@@ -80,7 +80,7 @@ func _read_string(contents: String, use_escape_sequences: bool, start_char: Stri
 
 	return str
 
-func _read_element(contents: String):
+func _read_element(contents: String, use_escape_sequences: bool):
 	var elements: Array[KV1Element] = []
 	while (true):
 		if (stri >= contents.length()): break
@@ -93,19 +93,19 @@ func _read_element(contents: String):
 			break
 		
 		# read key
-		var childKey = _read_string(contents, true)
+		var childKey = _read_string(contents, use_escape_sequences)
 		elements.push_back(KV1Element.new())
 		elements.back().key = childKey
 		_eat_whitespace_and_slcomments(contents)
 		
 		# read value
 		if (contents[stri] != TK_BLOCK_START):
-			elements.back().value = _read_string(contents, true)
+			elements.back().value = _read_string(contents, use_escape_sequences)
 			_eat_whitespace_and_slcomments(contents)
 		
 		# read conditional
 		if (contents[stri] == TK_COND_START):
-			elements.back().conditional = _read_string(contents, true, TK_COND_START, TK_COND_END)
+			elements.back().conditional = _read_string(contents, use_escape_sequences, TK_COND_START, TK_COND_END)
 			_eat_whitespace_and_slcomments(contents)
 		
 		# read block
@@ -113,7 +113,7 @@ func _read_element(contents: String):
 			stri += 1
 			_eat_whitespace_and_slcomments(contents)
 			if (contents[stri] != TK_BLOCK_END):
-				elements.back().children = _read_element(contents)
+				elements.back().children = _read_element(contents, use_escape_sequences)
 			else:
 				stri += 1
 	
@@ -122,12 +122,18 @@ func _read_element(contents: String):
 func _init():
 	_root = KV1Element.new()
 
-func parse(contents: String):
+func parse(contents: String, use_escape_sequences: bool = false):
 	stri = 0
-	_root.children = _read_element(contents)
+	_root.children = _read_element(contents, use_escape_sequences)
+
+func _to_string():
+	pass
 
 class KV1Element:
 	var key: String = ""
 	var conditional: String = ""
 	var value: String = ""
 	var children: Array[KV1Element] = []
+	
+	func _to_string():
+		pass
