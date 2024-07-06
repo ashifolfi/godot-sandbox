@@ -9,12 +9,18 @@ class_name KeyValues extends Node
 
 const TK_BLOCK_START = '{'
 const TK_BLOCK_END = '}'
+const TK_COND_START = '['
+const TK_COND_END = ']'
 const DEF_STRING_START = '"'
 const DEF_STRING_END = '"'
 const DEF_SINGLE_LINE_COMMENT_START = "//"
 
 var stri: int = 0
-var kvdict: Dictionary
+var _root: KV1Element
+
+var children: Array[KV1Element]:
+	get:
+		return _root.children
 
 func _is_new_line(c: String) -> bool:
 	return (c == '\n' or c == '\r')
@@ -75,7 +81,7 @@ func _read_string(contents: String, use_escape_sequences: bool, start_char: Stri
 	return str
 
 func _read_element(contents: String):
-	var dict = {}
+	var elements: Array[KV1Element] = []
 	while (true):
 		if (stri >= contents.length()): break
 		_eat_whitespace_and_slcomments(contents)
@@ -88,26 +94,37 @@ func _read_element(contents: String):
 		
 		# read key
 		var childKey = _read_string(contents, true)
+		elements.push_back(KV1Element.new())
+		elements.back().key = childKey
 		_eat_whitespace_and_slcomments(contents)
 		
 		# read value
 		if (contents[stri] != TK_BLOCK_START):
-			dict[childKey] = _read_string(contents, true)
+			elements.back().value = _read_string(contents, true)
 			_eat_whitespace_and_slcomments(contents)
 		
-		# todo: conditionals
+		# read conditional
+		if (contents[stri] == TK_COND_START):
+			elements.back().conditional = _read_string(contents, true, TK_COND_START, TK_COND_END)
+			_eat_whitespace_and_slcomments(contents)
 		
 		# read block
 		if (contents[stri] == TK_BLOCK_START):
 			stri += 1
 			_eat_whitespace_and_slcomments(contents)
 			if (contents[stri] != TK_BLOCK_END):
-				dict[childKey] = _read_element(contents)
+				elements.back().children = _read_element(contents)
 			else:
 				stri += 1
 	
-	return dict
+	return elements
 
 func parse(contents: String):
 	stri = 0
-	kvdict = _read_element(contents)
+	_root.children = _read_element(contents)
+
+class KV1Element:
+	var key: String = ""
+	var conditional: String = ""
+	var value: String = ""
+	var children: Array[KV1Element] = []
