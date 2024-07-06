@@ -1,0 +1,10 @@
+{
+	"default.left": {
+		"volume": 1.0,
+		"rndwav": ["player/footsteps/concrete1.wav", "player/footsteps/concrete3.wav"]
+	},
+	"default.right": {
+		"volume": 1.0,
+		"rndwav": ["player/footsteps/concrete1.wav", "player/footsteps/concrete3.wav"]
+	}
+}

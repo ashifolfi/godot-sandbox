@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://c5mdugd1e3bvh"]
+
+[node name="DEVUI" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="cl" type="CanvasLayer" parent="."]
+
+[node name="rootpanel" type="Control" parent="cl"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="showpos" type="Label" parent="cl/rootpanel"]
+offset_right = 40.0
+offset_bottom = 23.0

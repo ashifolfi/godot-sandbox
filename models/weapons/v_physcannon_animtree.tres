@@ -1,0 +1,69 @@
+[gd_resource type="AnimationNodeBlendTree" load_steps=15 format=3 uid="uid://dkpwa86keq1es"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ti1d3"]
+animation = &"altfire"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_d4r7k"]
+animation = &"prongsshut"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_r15cr"]
+animation = &"fire"
+
+[sub_resource type="AnimationNodeOneShot" id="AnimationNodeOneShot_gn4lm"]
+
+[sub_resource type="AnimationNodeOneShot" id="AnimationNodeOneShot_w23vx"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_2m1x1"]
+animation = &"draw"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ilfir"]
+animation = &"hold_idle"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_pfgsr"]
+animation = &"idle"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_yj88m"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_uyi40"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_jjtd0"]
+advance_mode = 2
+advance_expression = "holding_object == true"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_3t121"]
+advance_mode = 2
+advance_expression = "holding_object == false"
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_s323x"]
+states/draw/node = SubResource("AnimationNodeAnimation_2m1x1")
+states/draw/position = Vector2(333, 100)
+states/hold_idle/node = SubResource("AnimationNodeAnimation_ilfir")
+states/hold_idle/position = Vector2(520, 251)
+states/idle/node = SubResource("AnimationNodeAnimation_pfgsr")
+states/idle/position = Vector2(518, 97)
+transitions = ["Start", "draw", SubResource("AnimationNodeStateMachineTransition_yj88m"), "draw", "idle", SubResource("AnimationNodeStateMachineTransition_uyi40"), "idle", "hold_idle", SubResource("AnimationNodeStateMachineTransition_jjtd0"), "hold_idle", "idle", SubResource("AnimationNodeStateMachineTransition_3t121")]
+
+[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_lmeh0"]
+filter_enabled = true
+filters = ["v_physcannon_qc_skeleton/Skeleton3D:Prong_A", "v_physcannon_qc_skeleton/Skeleton3D:Prong_B"]
+
+[resource]
+nodes/Animation/node = SubResource("AnimationNodeAnimation_r15cr")
+nodes/Animation/position = Vector2(260, 240)
+"nodes/Animation 2/node" = SubResource("AnimationNodeAnimation_ti1d3")
+"nodes/Animation 2/position" = Vector2(560, 240)
+"nodes/Animation 3/node" = SubResource("AnimationNodeAnimation_d4r7k")
+"nodes/Animation 3/position" = Vector2(880, 260)
+nodes/Fire/node = SubResource("AnimationNodeOneShot_gn4lm")
+nodes/Fire/position = Vector2(700, 120)
+nodes/FireFail/node = SubResource("AnimationNodeOneShot_w23vx")
+nodes/FireFail/position = Vector2(400, 120)
+nodes/Idle/node = SubResource("AnimationNodeStateMachine_s323x")
+nodes/Idle/position = Vector2(80, 120)
+nodes/ProngPosition/node = SubResource("AnimationNodeBlend2_lmeh0")
+nodes/ProngPosition/position = Vector2(1040, 120)
+nodes/output/position = Vector2(1240, 120)
+node_connections = [&"Fire", 0, &"FireFail", &"Fire", 1, &"Animation 2", &"FireFail", 0, &"Idle", &"FireFail", 1, &"Animation", &"ProngPosition", 0, &"Fire", &"ProngPosition", 1, &"Animation 3", &"output", 0, &"ProngPosition"]

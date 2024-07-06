@@ -1,0 +1,105 @@
+[gd_scene load_steps=10 format=3 uid="uid://c14hlb3sr3nyy"]
+
+[ext_resource type="Shader" path="res://shaders/VertexLitGeneric.gdshader" id="1_45gbg"]
+[ext_resource type="Texture2D" uid="uid://tb0fdv4cji75" path="res://models/weapons/weapon_physcannon_v_physcannon_sheet.png" id="2_hyfx2"]
+[ext_resource type="Texture2D" uid="uid://di8uhyx4qqn0b" path="res://models/weapons/weapon_physcannon_v_physcannon_normal.png" id="3_8ldnc"]
+
+[sub_resource type="Environment" id="Environment_ri0if"]
+background_mode = 2
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_mju56"]
+render_priority = 0
+shader = ExtResource("1_45gbg")
+shader_parameter/color2 = Color(1, 1, 1, 1)
+shader_parameter/phongexponent = 32.0
+shader_parameter/phongboost = 4.0
+shader_parameter/phongtint = Color(1, 1, 1, 1)
+shader_parameter/phongfresnelranges = Vector3(0, 0.5, 1)
+shader_parameter/halflambert = true
+shader_parameter/phong = true
+shader_parameter/basetexture = ExtResource("2_hyfx2")
+shader_parameter/bumpmap = ExtResource("3_8ldnc")
+
+[sub_resource type="SphereMesh" id="SphereMesh_80vxu"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_rrs80"]
+render_priority = 0
+shader = ExtResource("1_45gbg")
+shader_parameter/color2 = Color(1, 1, 1, 1)
+shader_parameter/phongexponent = 4.0
+shader_parameter/phongboost = 32.0
+shader_parameter/phongtint = Color(1, 1, 1, 1)
+shader_parameter/phongfresnelranges = Vector3(0, 0.5, 1)
+shader_parameter/halflambert = false
+shader_parameter/phong = true
+shader_parameter/basetexture = ExtResource("2_hyfx2")
+shader_parameter/bumpmap = ExtResource("3_8ldnc")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_a85a5"]
+diffuse_mode = 2
+albedo_texture = ExtResource("2_hyfx2")
+normal_enabled = true
+normal_texture = ExtResource("3_8ldnc")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1s8c3"]
+diffuse_mode = 1
+albedo_texture = ExtResource("2_hyfx2")
+normal_enabled = true
+normal_texture = ExtResource("3_8ldnc")
+
+[node name="Node3D" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_ri0if")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.551351, 0)
+material_override = SubResource("ShaderMaterial_mju56")
+mesh = SubResource("SphereMesh_80vxu")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.75135, 0)
+material_override = SubResource("ShaderMaterial_rrs80")
+mesh = SubResource("SphereMesh_80vxu")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.648649, 0)
+material_override = SubResource("StandardMaterial3D_a85a5")
+mesh = SubResource("SphereMesh_80vxu")
+
+[node name="MeshInstance3D4" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.76953, 0)
+material_override = SubResource("StandardMaterial3D_1s8c3")
+mesh = SubResource("SphereMesh_80vxu")
+
+[node name="Label3D" type="Label3D" parent="."]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0.731656, 1.48299)
+text = "StandardMaterial
+Half Lambert"
+
+[node name="Label3D4" type="Label3D" parent="."]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 1.85253, 1.48299)
+text = "StandardMaterial
+Lambert"
+
+[node name="Label3D2" type="Label3D" parent="."]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, -0.551434, 1.48299)
+text = "VertexLitGeneric
+Half Lambert + Phong"
+
+[node name="Label3D3" type="Label3D" parent="."]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, -1.77029, 1.48299)
+text = "VertexLitGeneric
+Lambert + Phong"
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 4)
+light_color = Color(0.934784, 0.53849, 3.85046e-07, 1)
+shadow_enabled = true
+sky_mode = 1
+
+[node name="DirectionalLight3D2" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 2.07737e-05, -0.000213215, 2.18144e-05, -0.999988, 0.00488211, -0.000213111, -0.00488212, -0.999988, 0, 0, -4)
+light_color = Color(5.0056e-06, 0.603938, 0.74847, 1)
+shadow_enabled = true
+sky_mode = 1
