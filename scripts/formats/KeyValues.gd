@@ -127,7 +127,7 @@ func parse(contents: String, use_escape_sequences: bool = false):
 	_root.children = _read_element(contents, use_escape_sequences)
 
 func _to_string():
-	pass
+	return _root._to_string()
 
 class KV1Element:
 	var key: String = ""
@@ -136,4 +136,18 @@ class KV1Element:
 	var children: Array[KV1Element] = []
 	
 	func _to_string():
-		pass
+		var ostr = "\"" + key + "\""
+		
+		if (value != ""):
+			ostr += " \"" + value + "\""
+		
+		if (conditional != ""):
+			ostr += " [" + conditional + "]"
+		
+		if (children.size() > 0):
+			ostr += "\n{"
+			for child in children:
+				ostr += "\n" + str(child).indent("\t")
+			ostr += "\n}"
+		
+		return ostr
