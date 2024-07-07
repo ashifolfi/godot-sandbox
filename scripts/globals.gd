@@ -6,6 +6,9 @@ extends Node
 func src_to_gd(units):
 	return units * 0.01905
 
+func gd_to_src(units):
+	return units / 0.01905
+
 # in/s to m/s
 func src_vel(inches):
 	return inches * 0.0254
@@ -14,14 +17,23 @@ var sounds: Dictionary
 
 # Constants
 const tickrate = 66
-const source_gravity = 600.0
+# https://developer.valvesoftware.com/wiki/Gravity
+const sv_gravity = 600.0
+const sv_friction = 4.0
+const sv_stopspeed = 100.0
+const sv_accelerate = 10.0
+const sv_maxspeed = 320.0
+const sv_maxvelocity = 3500.0
+const sv_airaccelerate = 10.0
+const cl_forwardspeed = 450.0
+const cl_sidespeed = 450.0
 
-var gravity
+const GAMEMOVEMENT_DUCK_TIME = 1000.0 # ms
+const GAMEMOVEMENT_JUMP_TIME = 510.0 # ms
+const GAMEMOVEMENT_JUMP_HEIGHT = 21.0
 
 func _ready():
 	ProjectSettings.set_setting("physics/common/physics_ticks_per_second", tickrate)
-	# https://developer.valvesoftware.com/wiki/Gravity
-	gravity = src_to_gd(sqrt(source_gravity / tickrate))
 
 func debug_draw_ray(from, to, color):
 	var mi3d = MeshInstance3D.new()

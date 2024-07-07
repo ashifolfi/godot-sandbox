@@ -1,0 +1,1 @@
+class_name InfoPlayerStart extends Node3D
