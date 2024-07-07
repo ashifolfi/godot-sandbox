@@ -15,6 +15,7 @@
 render_mode depth_draw_always, cull_back, ambient_light_disabled;
 
 uniform sampler2D basetexture;
+uniform bool bumpmap_enabled;
 uniform sampler2D bumpmap;
 uniform vec3 color2 : source_color = vec3(1.0);
 uniform bool translucent = false;
@@ -44,7 +45,7 @@ float f_lambert(vec3 N, vec3 L) {
 	vec3 nrmL = normalize(L);
 	float result = dot(nrmN, nrmL);
 	
-	return max(result, 0.0);
+	return clamp(result, 0.0, 1.0);
 }
 
 // https://developer.valvesoftware.com/wiki/Phong_materials

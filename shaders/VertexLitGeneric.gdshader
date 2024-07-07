@@ -12,5 +12,7 @@ void fragment() {
 	}
 	
 	ALBEDO = color;
-	NORMAL_MAP = texture(bumpmap, UV).rgb;
+	if (bumpmap_enabled) {
+		NORMAL_MAP = texture(bumpmap, UV).rgb;
+	}
 }
