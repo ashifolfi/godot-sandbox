@@ -3,6 +3,7 @@
 [ext_resource type="ArrayMesh" uid="uid://n5sgc5p577go" path="res://models/props_junk/wood_crate001a_qc_wood_crate001a_reference.res" id="1_wvbca"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_27gyc"]
+friction = 0.8
 
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_8nhho"]
 points = PackedVector3Array(0.377728, 0.37415, 0.378923, 0.377728, -0.37897, 0.378923, 0.377728, 0.37415, -0.380517, -0.377509, 0.37415, 0.378923, -0.377509, -0.37897, 0.378923, 0.377728, -0.37897, -0.380517, -0.377509, 0.37415, -0.380517, -0.377509, -0.37897, -0.380517)

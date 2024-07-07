@@ -12,6 +12,7 @@ var pull_force: float = Global.src_vel(4.0)
 
 var holding_object := false
 var held_object: RigidBody3D
+var held_object_rot: float
 var action_wait := 0
 
 func weapon_name() -> String:
@@ -25,6 +26,7 @@ func weapon_view_model() -> Resource:
 
 func _grab_object(object):
 	held_object = object
+	held_object_rot = object.rotation.y
 	holding_object = true
 	
 	held_object.axis_lock_angular_x = true
@@ -49,6 +51,8 @@ func weapon_idle():
 		var target_pos = get_parent().get_eye_position() + (get_parent().get_facing_vector() * hold_distance)
 		held_object.linear_velocity = ogPos.direction_to(target_pos).normalized()\
 		* ogPos.distance_to(target_pos) * 10
+		
+		held_object.rotation.y = held_object_rot + get_parent().rotation.y
 		
 		animator["parameters/ProngPosition/blend_amount"] = lerpf(animator["parameters/ProngPosition/blend_amount"], 0.0, 0.2)
 		return
