@@ -67,11 +67,11 @@ func _physics_process(delta):
 	
 	current_weapon.weapon_idle()
 	
-	if (Input.is_action_just_pressed("fire_primary")):
-		current_weapon.fire_primary()
+	if (Input.is_action_pressed("fire_primary")):
+		current_weapon.fire_primary(!Input.is_action_just_pressed("fire_primary"))
 	
-	if (Input.is_action_just_pressed("fire_secondary")):
-		current_weapon.fire_secondary()
+	if (Input.is_action_pressed("fire_secondary")):
+		current_weapon.fire_secondary(!Input.is_action_just_pressed("fire_secondary"))
 
 func get_eye_height() -> float:
 	return camera.position.y

@@ -16,10 +16,10 @@ func _ready():
 	animator.tree_root = weapon_anim_tree()
 	add_child(animator)
 
-func fire_primary():
+func fire_primary(held: bool):
 	pass
 
-func fire_secondary():
+func fire_secondary(held: bool):
 	pass
 
 func weapon_idle():
