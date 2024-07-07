@@ -1,12 +1,12 @@
 class_name WeaponPhyscannon extends BaseWeapon
 
 var punt_force: float = Global.src_vel(1500.0)
-var hold_distance: float = 2.5
+var hold_distance := 2.5
 var fire_distance: float = Global.src_to_gd(250.0)
 var pull_distance: float = Global.src_to_gd(800.0)
 var pull_force: float = Global.src_vel(4.0)
 
-var holding_object = false
+var holding_object := false
 var held_object: RigidBody3D
 var action_wait := 0
 

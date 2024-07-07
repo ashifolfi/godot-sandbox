@@ -1,13 +1,12 @@
 [gd_scene load_steps=3 format=3 uid="uid://2fssiql033h"]
 
-[ext_resource type="Script" path="res://scripts/PlayerController.gd" id="1_jpy8w"]
+[ext_resource type="Script" path="res://scripts/entities/BasePlayer.gd" id="1_jpy8w"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_4v2hu"]
 
-[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("camera", "vm_camera")]
+[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("camera")]
 script = ExtResource("1_jpy8w")
 camera = NodePath("Camera3D")
-vm_camera = NodePath("")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)

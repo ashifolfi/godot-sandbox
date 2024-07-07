@@ -1,0 +1,21 @@
+[gd_scene load_steps=5 format=3 uid="uid://bf8f56ndkmgaa"]
+
+[ext_resource type="Material" uid="uid://dt4hs6efry2r5" path="res://materials/models/props_c17/oil_drum001a.material" id="1_hfamx"]
+[ext_resource type="ArrayMesh" uid="uid://btjf7ryiulxj3" path="res://models/props_c17/oildrum001_reference.res" id="1_tyk3d"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_0uo7c"]
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_20ss5"]
+points = PackedVector3Array(0, 0.855, 0.266, 0.101755, 0.855, 0.245743, -0.101807, 0.855, 0.245743, -0.101807, -1.9e-08, 0.245743, 0, -1.9e-08, 0.265948, 0.101755, -1.9e-08, 0.245743, 0.188043, 0.855, 0.188044, -0.188096, 0.855, 0.188044, -0.188096, -1.9e-08, 0.188044, 0.188043, -1.9e-08, 0.188044, 0.245743, 0.855, 0.101755, -0.245795, 0.855, 0.101755, -0.245795, -1.9e-08, 0.101755, 0.245743, -1.9e-08, 0.101755, 0.265948, 0.855, 2.98023e-08, -0.266, 0.855, 2.98023e-08, -0.266, -1.9e-08, 2.98023e-08, 0.265948, -1.9e-08, -5.20349e-05, 0.245743, 0.855, -0.101807, -0.245795, 0.855, -0.101807, -0.245795, -1.9e-08, -0.101807, 0.245743, -1.9e-08, -0.101807, 0.188043, 0.855, -0.188096, -0.188096, 0.855, -0.188096, -0.188096, -1.9e-08, -0.188096, 0.188043, -1.9e-08, -0.188096, 0.101755, 0.855, -0.245795, -0.101807, 0.855, -0.245795, -0.101807, -1.9e-08, -0.245795, 0.101755, -1.9e-08, -0.245795, -5.20647e-05, 0.855, -0.266, -5.20647e-05, -1.9e-08, -0.266)
+
+[node name="PhysicsBox" type="RigidBody3D"]
+mass = 30.0
+physics_material_override = SubResource("PhysicsMaterial_0uo7c")
+freeze_mode = 1
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+material_override = ExtResource("1_hfamx")
+mesh = ExtResource("1_tyk3d")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("ConvexPolygonShape3D_20ss5")
