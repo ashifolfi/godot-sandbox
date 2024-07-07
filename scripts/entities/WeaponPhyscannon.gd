@@ -1,7 +1,11 @@
 class_name WeaponPhyscannon extends BaseWeapon
 
-var punt_force: float = Global.src_vel(1500.0)
-var hold_distance := 2.5
+const sfx_fire = preload("res://sound/weapons/physcannon/superphys_launch1.wav")
+const sfx_drop = preload("res://sound/weapons/physcannon/physcannon_drop.wav")
+const sfx_pickup = preload("res://sound/weapons/physcannon/physcannon_pickup.wav")
+
+var punt_force: float = Global.src_vel(500.0)
+var hold_distance := 1.5
 var fire_distance: float = Global.src_to_gd(250.0)
 var pull_distance: float = Global.src_to_gd(800.0)
 var pull_force: float = Global.src_vel(4.0)
@@ -40,9 +44,11 @@ func weapon_idle():
 	
 	if (holding_object):
 		# position object
+		var ogPos = held_object.position + held_object.center_of_mass
+		
 		var target_pos = get_parent().get_eye_position() + (get_parent().get_facing_vector() * hold_distance)
-		held_object.linear_velocity = held_object.position.direction_to(target_pos).normalized()\
-		* held_object.position.distance_to(target_pos) * 10
+		held_object.linear_velocity = ogPos.direction_to(target_pos).normalized()\
+		* ogPos.distance_to(target_pos) * 10
 		
 		animator["parameters/ProngPosition/blend_amount"] = lerpf(animator["parameters/ProngPosition/blend_amount"], 0.0, 0.2)
 		return
@@ -66,6 +72,8 @@ func fire_primary(held: bool):
 		held_object.linear_velocity += impulse
 		
 		animator["parameters/Fire/request"] = AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE
+		player.stream = sfx_fire
+		player.play()
 		return
 	else:
 		var cast_res = get_parent().cast_from_eye(fire_distance)
@@ -76,14 +84,21 @@ func fire_primary(held: bool):
 			
 			rb3d.linear_velocity += impulse
 			
+			player.stream = sfx_fire
+			player.play()
 			animator["parameters/Fire/request"] = AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE
 			return
 	
 	animator["parameters/FireFail/request"] = AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE
 
 func fire_secondary(held: bool):
-	if (holding_object and !held):
+	if (holding_object):
+		if (held):
+			return
 		_drop_object()
+		
+		player.stream = sfx_drop
+		player.play()
 		action_wait = 50 # buffer so you don't immediately regrab
 	else:
 		if (action_wait > 0): return;
@@ -95,6 +110,9 @@ func fire_secondary(held: bool):
 		if (cast_res.get("collider") != null
 		and cast_res.get("collider") is RigidBody3D):
 			_grab_object(cast_res.get("collider"))
+			
+			player.stream = sfx_pickup
+			player.play()
 		
 		elif (cast_pull.get("collider") != null
 		and cast_pull.get("collider") is RigidBody3D):

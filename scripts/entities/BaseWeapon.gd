@@ -1,6 +1,7 @@
 class_name BaseWeapon extends Node
 
 var animator: AnimationTree
+var player: AudioStreamPlayer
 
 func weapon_name() -> String:
 	return "weapon"
@@ -15,6 +16,9 @@ func _ready():
 	animator = AnimationTree.new()
 	animator.tree_root = weapon_anim_tree()
 	add_child(animator)
+	
+	player = AudioStreamPlayer.new()
+	add_child(player)
 
 func fire_primary(held: bool):
 	pass
