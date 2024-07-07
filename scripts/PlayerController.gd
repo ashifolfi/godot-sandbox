@@ -33,8 +33,6 @@ func _physics_process(delta):
 	if (Input.is_action_pressed("quit")):
 		get_tree().quit()
 	
-	vm_camera.global_transform = camera.global_transform
-	
 	# capture mouse
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	velocity = Vector3(0, velocity.y, 0)
@@ -112,7 +110,7 @@ func _swap_weapon(idx):
 		weapon_model.queue_free()
 	
 	weapon_model = current_weapon.weapon_view_model().instantiate()
-	vm_camera.add_child(weapon_model)
+	camera.add_child(weapon_model)
 	
 	# HACK: hl2 models are inverted!
 	weapon_model.rotation_degrees.y = 180
