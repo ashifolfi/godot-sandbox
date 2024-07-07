@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://betlj7ofxghex"]
+[gd_scene load_steps=21 format=3 uid="uid://betlj7ofxghex"]
 
 [ext_resource type="Texture2D" uid="uid://drupp8l7f05r4" path="res://addons/kenney_prototype_textures/orange/texture_01.png" id="1_8xgpc"]
 [ext_resource type="PackedScene" uid="uid://405rfh3oxgnu" path="res://scenes/prefabs/physics_box.tscn" id="1_qokxv"]
@@ -16,15 +16,26 @@ background_mode = 2
 sky = SubResource("Sky_fg6j6")
 ambient_light_source = 3
 ambient_light_color = Color(0.188949, 0.118032, 0.0797054, 1)
-tonemap_mode = 2
-glow_enabled = true
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_bkqwm"]
-size = Vector3(35, 0.5, 35)
+[sub_resource type="BoxShape3D" id="BoxShape3D_p5htq"]
+size = Vector3(15, 0.5, 35)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_df0er"]
 albedo_texture = ExtResource("1_8xgpc")
 uv1_scale = Vector3(35, 20, 0.5)
+
+[sub_resource type="BoxMesh" id="BoxMesh_qdt0p"]
+lightmap_size_hint = Vector2i(254, 186)
+size = Vector3(15, 0.5, 35)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_0rccc"]
+size = Vector3(6, 0.5, 18)
+
+[sub_resource type="BoxMesh" id="BoxMesh_n74qw"]
+size = Vector3(6, 0.5, 18)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_bkqwm"]
+size = Vector3(35, 0.5, 35)
 
 [sub_resource type="BoxMesh" id="BoxMesh_doq3f"]
 size = Vector3(35, 0.5, 35)
@@ -55,7 +66,7 @@ light_color = Color(0.641934, 0.641934, 0.641934, 1)
 shadow_enabled = true
 
 [node name="OmniLight3D" type="OmniLight3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.68595, 6.04747, 2.26509)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.3823, 4.8905, 2.26509)
 light_color = Color(2.98411e-06, 0.531135, 0.782746, 1)
 light_energy = 5.266
 omni_range = 28.6711
@@ -66,11 +77,31 @@ environment = SubResource("Environment_iy1t6")
 [node name="Map" type="Node" parent="."]
 
 [node name="Floor_static" type="StaticBody3D" parent="Map"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.1176, 6.00813, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Map/Floor_static"]
-shape = SubResource("BoxShape3D_bkqwm")
+shape = SubResource("BoxShape3D_p5htq")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Map/Floor_static"]
+material_override = SubResource("StandardMaterial3D_df0er")
+mesh = SubResource("BoxMesh_qdt0p")
+
+[node name="Floor_static3" type="StaticBody3D" parent="Map"]
+transform = Transform3D(-4.09845e-08, 0.347672, 0.937616, 1.51972e-08, 0.937616, -0.347672, -1, 0, -4.37114e-08, 5.78444, 2.9022, -14.4395)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Map/Floor_static3"]
+shape = SubResource("BoxShape3D_0rccc")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Map/Floor_static3"]
+material_override = SubResource("StandardMaterial3D_df0er")
+mesh = SubResource("BoxMesh_n74qw")
+
+[node name="Floor_static2" type="StaticBody3D" parent="Map"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Map/Floor_static2"]
+shape = SubResource("BoxShape3D_bkqwm")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Map/Floor_static2"]
 material_override = SubResource("StandardMaterial3D_df0er")
 mesh = SubResource("BoxMesh_doq3f")
 
