@@ -71,6 +71,12 @@ light_color = Color(2.98411e-06, 0.531135, 0.782746, 1)
 light_energy = 5.266
 omni_range = 28.6711
 
+[node name="OmniLight3D" type="OmniLight3D" parent="OmniLight3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 23.5344, 4.26302, -13.5938)
+light_color = Color(2.98411e-06, 0.531135, 0.782746, 1)
+light_energy = 5.266
+omni_range = 28.6711
+
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_iy1t6")
 
@@ -106,42 +112,46 @@ material_override = SubResource("StandardMaterial3D_df0er")
 mesh = SubResource("BoxMesh_doq3f")
 
 [node name="Wall" type="StaticBody3D" parent="Map"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -13.1441, 0.832911, 17.3791)
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -0.1441, 9.83291, 17.3791)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Map/Wall"]
 shape = SubResource("BoxShape3D_3miix")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Map/Wall"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -4.76837e-07)
 material_override = SubResource("StandardMaterial3D_diof0")
 mesh = SubResource("BoxMesh_lxcxj")
 
 [node name="Wall2" type="StaticBody3D" parent="Map"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0.832911, -17.4957)
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 9.83291, -17.4957)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Map/Wall2"]
 shape = SubResource("BoxShape3D_3miix")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Map/Wall2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -4.76837e-07)
 material_override = SubResource("StandardMaterial3D_diof0")
 mesh = SubResource("BoxMesh_lxcxj")
 
 [node name="Wall3" type="StaticBody3D" parent="Map"]
-transform = Transform3D(-4.37114e-08, 1, 4.37114e-08, 0, -4.37114e-08, 1, 1, 4.37114e-08, 1.91069e-15, -17.4374, 0.832911, -0.0583256)
+transform = Transform3D(-4.37114e-08, 1, 4.37114e-08, 0, -4.37114e-08, 1, 1, 4.37114e-08, 1.91069e-15, -17.4374, 9.83291, -0.0583256)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Map/Wall3"]
 shape = SubResource("BoxShape3D_3miix")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Map/Wall3"]
+transform = Transform3D(1, 0, 0, 0, 1, 8.35189e-23, 0, 8.35188e-23, 1, 0, 0, -4.76837e-07)
 material_override = SubResource("StandardMaterial3D_fdjvu")
 mesh = SubResource("BoxMesh_lxcxj")
 
 [node name="Wall4" type="StaticBody3D" parent="Map"]
-transform = Transform3D(-4.37114e-08, 1, 4.37114e-08, 0, -4.37114e-08, 1, 1, 4.37114e-08, 1.91069e-15, 17.4374, 0.832911, -0.0583241)
+transform = Transform3D(-4.37114e-08, 1, 4.37114e-08, 0, -4.37114e-08, 1, 1, 4.37114e-08, 1.91069e-15, 17.4374, 9.83291, -0.0583241)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Map/Wall4"]
 shape = SubResource("BoxShape3D_3miix")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Map/Wall4"]
+transform = Transform3D(1, 0, 0, 0, 1, 8.35189e-23, 0, 8.35188e-23, 1, 0, 0, -4.76837e-07)
 material_override = SubResource("StandardMaterial3D_nvigf")
 mesh = SubResource("BoxMesh_lxcxj")
 
