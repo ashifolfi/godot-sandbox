@@ -3631,9 +3631,13 @@ _subresources={
 }
 },
 "materials": {
+"v_hand_sheet": {
+"use_external/enabled": true,
+"use_external/path": "res://materials/models/weapons/v_hand/v_hand_sheet.material"
+},
 "v_physcannon_sheet": {
 "use_external/enabled": true,
-"use_external/path": "res://materials/v_physcannon.material"
+"use_external/path": "res://materials/models/weapons/v_physcannon/v_physcannon.material"
 }
 },
 "nodes": {
