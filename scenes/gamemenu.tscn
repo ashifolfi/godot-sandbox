@@ -1,0 +1,64 @@
+[gd_scene load_steps=3 format=3 uid="uid://nt7kcnnxycj3"]
+
+[ext_resource type="Script" path="res://scenes/gamemenu.gd" id="1_0t7gj"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_771i2"]
+font_size = 72
+
+[node name="GameMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+script = ExtResource("1_0t7gj")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.061
+anchor_top = 0.5
+anchor_right = 0.258
+anchor_bottom = 1.0
+offset_left = -0.326004
+offset_top = -2.0
+offset_right = -0.428009
+grow_vertical = 2
+
+[node name="Button" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "Test Map"
+flat = true
+alignment = 0
+
+[node name="Button2" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "Options"
+flat = true
+alignment = 0
+
+[node name="Button3" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "Quit"
+flat = true
+alignment = 0
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.061
+anchor_top = 0.302
+anchor_right = 0.506
+anchor_bottom = 0.491
+offset_left = -0.326004
+offset_top = 0.0639954
+offset_right = -0.196045
+offset_bottom = -0.0880127
+text = "Project Sandbox"
+label_settings = SubResource("LabelSettings_771i2")
+metadata/_edit_use_anchors_ = true
+
+[connection signal="pressed" from="VBoxContainer/Button" to="." method="_on_testmap_pressed"]
+[connection signal="pressed" from="VBoxContainer/Button3" to="." method="_on_quit_pressed"]
