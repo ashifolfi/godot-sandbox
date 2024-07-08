@@ -5,7 +5,7 @@ const sfx_drop = preload("res://sound/weapons/physcannon/physcannon_drop.wav")
 const sfx_pickup = preload("res://sound/weapons/physcannon/physcannon_pickup.wav")
 
 var punt_force: float = Global.src_vel(500.0)
-var hold_distance := 1.5
+var hold_distance := 2.0
 var fire_distance: float = Global.src_to_gd(250.0)
 var pull_distance: float = Global.src_to_gd(800.0)
 var pull_force: float = Global.src_vel(4.0)
