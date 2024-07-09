@@ -1,0 +1,94 @@
+[gd_scene load_steps=13 format=3 uid="uid://bc11167c0f07k"]
+
+[ext_resource type="Script" path="res://scenes/bsptest.gd" id="1_ilpkm"]
+[ext_resource type="Script" path="res://scripts/debug/FreeCam.gd" id="2_oym3s"]
+[ext_resource type="Shader" path="res://shaders/3d_editor_grid.gdshader" id="3_fqus0"]
+[ext_resource type="Script" path="res://scripts/debug/3DGrid.gd" id="4_stmak"]
+[ext_resource type="Shader" path="res://shaders/RecolorUI.gdshader" id="5_06bsk"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_1tdvg"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_mkfc6"]
+sky_material = SubResource("ProceduralSkyMaterial_1tdvg")
+
+[sub_resource type="Environment" id="Environment_bbttg"]
+background_mode = 2
+sky = SubResource("Sky_mkfc6")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ehv4c"]
+render_priority = 0
+shader = ExtResource("3_fqus0")
+shader_parameter/grid_color_main = Color(1, 1, 1, 1)
+shader_parameter/grid_color_sub = Color(0.321728, 0.321728, 0.321728, 1)
+shader_parameter/grid_size = 32.0
+shader_parameter/line_thickness = 1.0
+shader_parameter/fade_distance = 12.0
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_gd260"]
+material = SubResource("ShaderMaterial_ehv4c")
+size = Vector2(25, 25)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_h550y"]
+shader = ExtResource("5_06bsk")
+shader_parameter/color = Color(1, 0.784314, 0, 1)
+
+[sub_resource type="GDScript" id="GDScript_gt828"]
+script/source = "extends Camera3D
+
+func _physics_process(delta):
+	global_transform = %FreeCam.global_transform
+"
+
+[node name="Bsptest" type="Node3D"]
+script = ExtResource("1_ilpkm")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_bbttg")
+
+[node name="BSPWorld" type="Node3D" parent="."]
+
+[node name="FreeCam" type="Camera3D" parent="."]
+unique_name_in_owner = true
+script = ExtResource("2_oym3s")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+visible = false
+mesh = SubResource("PlaneMesh_gd260")
+script = ExtResource("4_stmak")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="Control"]
+layout_mode = 0
+offset_right = 410.0
+offset_bottom = 288.0
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="Control/Panel"]
+material = SubResource("ShaderMaterial_h550y")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+stretch = true
+
+[node name="SubViewport" type="SubViewport" parent="Control/Panel/SubViewportContainer"]
+transparent_bg = true
+handle_input_locally = false
+debug_draw = 4
+size = Vector2i(410, 288)
+render_target_update_mode = 4
+
+[node name="Camera3D" type="Camera3D" parent="Control/Panel/SubViewportContainer/SubViewport"]
+script = SubResource("GDScript_gt828")

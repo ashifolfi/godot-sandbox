@@ -9,6 +9,12 @@ func src_to_gd(units):
 func gd_to_src(units):
 	return units / 0.01905
 
+const MAX_31B = 1 << 31
+const MAX_32B = 1 << 32
+
+func unsigned32_to_signed(unsigned):
+	return (unsigned + MAX_31B) % MAX_32B - MAX_31B
+
 # in/s to m/s
 func src_vel(inches):
 	return inches * 0.0254
