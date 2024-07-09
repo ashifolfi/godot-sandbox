@@ -14,9 +14,13 @@ func _ready():
 		var arrays = []
 		arrays.resize(Mesh.ARRAY_MAX)
 
+		var faceTexInf = bspMap.texinfo[face.texinfo]
+		var faceTexData = bspMap.texdata[faceTexInf.texdata]
+
 		var usedVertices: PackedInt32Array = []
 		var faceVerts: PackedVector3Array = []
 		var faceIndices: PackedInt32Array = []
+		var faceUVs: PackedVector2Array = []
 		
 		for i in range(face.firstedge, face.firstedge + face.numedges):
 			var surfEdge = bspMap.surfedges[i]
@@ -63,9 +67,33 @@ func _ready():
 			
 			i += 1
 		
+		for vert in faceVerts:
+			var tv = faceTexInf.textureVecs
+			var srcVert = Vector3(
+				Global.gd_to_src(vert.x),
+				Global.gd_to_src(vert.z),
+				Global.gd_to_src(vert.y)
+			)
+			
+			var u = (tv[0].x * srcVert.x + tv[0].y * srcVert.y + tv[0].z * srcVert.z + tv[0].w)
+			var v = (tv[1].x * srcVert.x + tv[1].y * srcVert.y + tv[1].z * srcVert.z + tv[1].w)
+			
+			var uv = Vector2(
+				u / faceTexData.width,
+				v / faceTexData.height
+			)
+			faceUVs.push_back(uv)
+		
 		arrays[Mesh.ARRAY_VERTEX] = faceVerts
 		arrays[Mesh.ARRAY_INDEX] = faceIndices
+		arrays[Mesh.ARRAY_TEX_UV] = faceUVs
 		mi3d.mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays)
+		
+		var texName = bspMap.get_texture_name(faceTexData.nameStringTableID).to_lower()
+		mi3d.mesh.surface_set_material(
+			mi3d.mesh.get_surface_count() - 1,
+			load("res://materials/" + texName + ".material")
+		)
 	
 	world.add_child(mi3d)
 	

@@ -16,7 +16,10 @@ var verts: Array[Vector3]
 var edges: Array[BSPEdge]
 var surfedges: PackedInt32Array
 var faces: Array[BSPFace]
-var ogfaces: Array[BSPFace]
+var texinfo: Array[BSPTexInfo]
+var texdata: Array[BSPTexData]
+var texdatastringdata: PackedByteArray
+var texdatastringtable: PackedInt32Array
 
 enum {
 	Lump_Entities,
@@ -131,9 +134,31 @@ func read_file(path):
 	while (file.get_position() < lump_inf[Lump_Faces].file_ofs + lump_inf[Lump_Faces].file_len):
 		faces.push_back(BSPFace.new(file))
 	
-	file.seek(lump_inf[Lump_OriginalFaces].file_ofs)
-	while (file.get_position() < lump_inf[Lump_OriginalFaces].file_ofs + lump_inf[Lump_OriginalFaces].file_len):
-		ogfaces.push_back(BSPFace.new(file))
+	file.seek(lump_inf[Lump_TexInfo].file_ofs)
+	while (file.get_position() < lump_inf[Lump_TexInfo].file_ofs + lump_inf[Lump_TexInfo].file_len):
+		texinfo.push_back(BSPTexInfo.new(file))
+	
+	file.seek(lump_inf[Lump_TexData].file_ofs)
+	while (file.get_position() < lump_inf[Lump_TexData].file_ofs + lump_inf[Lump_TexData].file_len):
+		texdata.push_back(BSPTexData.new(file))
+	
+	file.seek(lump_inf[Lump_TexDataStringData].file_ofs)
+	texdatastringdata = file.get_buffer(lump_inf[Lump_TexDataStringData].file_len)
+	
+	file.seek(lump_inf[Lump_TexDataStringTable].file_ofs)
+	while (file.get_position() < lump_inf[Lump_TexDataStringTable].file_ofs + lump_inf[Lump_TexDataStringTable].file_len):
+		texdatastringtable.push_back(file.get_32())
+
+func get_texture_name(index: int) -> String:
+	var baOff = texdatastringtable[index]
+	
+	var extractedBytes: PackedByteArray = []
+	var i = baOff
+	while (texdatastringdata[i] != 0):
+		extractedBytes.push_back(texdatastringdata[i])
+		i += 1
+	
+	return extractedBytes.get_string_from_utf8()
 
 class BSPEdge:
 	var p1: int
@@ -216,6 +241,44 @@ class BSPFace:
 		
 		firstPrimID = file.get_32()
 		smoothingGroups = file.get_32()
+
+class BSPTexInfo:
+	var textureVecs: Array[Vector4]
+	var lightmapVecs: Array[Vector4]
+	var flags: int # miptex flags overrides
+	var texdata: int # pointer to texture name, size, etc.
+	
+	func _init(file: FileAccess):
+		textureVecs = [
+			Vector4(file.get_float(), file.get_float(), file.get_float(), file.get_float()),
+			Vector4(file.get_float(), file.get_float(), file.get_float(), file.get_float())
+		]
+		lightmapVecs = [
+			Vector4(file.get_float(), file.get_float(), file.get_float(), file.get_float()),
+			Vector4(file.get_float(), file.get_float(), file.get_float(), file.get_float())
+		]
+		flags = file.get_32()
+		texdata = file.get_32()
+
+class BSPTexData:
+	var reflectivity: Vector3
+	var nameStringTableID: int # index into texdatastringtable
+	var width: int
+	var height: int
+	var view_width: int
+	var view_height: int
+	
+	func _init(file: FileAccess):
+		reflectivity = Vector3(
+			file.get_float(),
+			file.get_float(),
+			file.get_float()
+		)
+		nameStringTableID = file.get_32()
+		width = file.get_32()
+		height = file.get_32()
+		view_width = file.get_32()
+		view_height = file.get_32()
 
 class LumpInfo:
 	var file_ofs: int
