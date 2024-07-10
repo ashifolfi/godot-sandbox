@@ -1,0 +1,31 @@
+[gd_scene load_steps=3 format=3 uid="uid://bettxutrjtjkc"]
+
+[ext_resource type="Texture2D" uid="uid://cxvi7i56pug0y" path="res://materials/console/background_loading.png" id="1_gvkj1"]
+[ext_resource type="Texture2D" uid="uid://dwylxjxgj2vt0" path="res://materials/console/startup_loading.png" id="2_bvvev"]
+
+[node name="LoadingScreen" type="Control"]
+z_index = 10
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="."]
+offset_right = 1366.0
+offset_bottom = 768.0
+texture = ExtResource("1_gvkj1")
+
+[node name="TextureRect2" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -40.0
+offset_top = -40.0
+grow_horizontal = 0
+grow_vertical = 0
+texture = ExtResource("2_bvvev")

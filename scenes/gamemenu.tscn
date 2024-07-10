@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://nt7kcnnxycj3"]
+[gd_scene load_steps=4 format=3 uid="uid://nt7kcnnxycj3"]
 
 [ext_resource type="Script" path="res://scenes/gamemenu.gd" id="1_0t7gj"]
+[ext_resource type="Texture2D" uid="uid://cxvi7i56pug0y" path="res://materials/console/background_loading.png" id="2_q3hsk"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_771i2"]
 font_size = 72
@@ -14,6 +15,12 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 1
 script = ExtResource("1_0t7gj")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 0
+offset_right = 1366.0
+offset_bottom = 768.0
+texture = ExtResource("2_q3hsk")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 1

@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://405rfh3oxgnu"]
 
-[ext_resource type="ArrayMesh" uid="uid://n5sgc5p577go" path="res://models/props_junk/wood_crate001a_qc_wood_crate001a_reference.res" id="1_wvbca"]
+[ext_resource type="ArrayMesh" uid="uid://n5sgc5p577go" path="res://models/props_junk/wood_crate001a_reference.res" id="1_wvbca"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_27gyc"]
 friction = 0.8

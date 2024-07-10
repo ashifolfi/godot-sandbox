@@ -1,0 +1,7 @@
+"ModelConfig"
+{
+	"Mass" "30"
+	"CenterOfMass" "0 0 0.5"
+	"PhysicsModel" "props_c17/oildrum001_physics.res"
+	"ReferenceModel" "props_c17/oildrum001_reference.res"
+}

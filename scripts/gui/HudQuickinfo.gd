@@ -16,6 +16,12 @@ const icon_scale = 0.10
 var prev_progress_health := 0.0
 var prev_progress_ammo := 0.0
 
+func _ready():
+	# apply recolor material
+	material = ShaderMaterial.new()
+	material.shader = load("res://shaders/RecolorUI.gdshader")
+	material.set_shader_parameter("color", Color(1.0, 0.78, 0.0, 1.0))
+
 func _process(delta):
 	if (prev_progress_ammo != progress_ammo):
 		prev_progress_ammo = progress_ammo
@@ -26,7 +32,7 @@ func _process(delta):
 		queue_redraw()
 
 func _draw():
-	var location = size / 2
+	var location = get_viewport_rect().size / 2
 	
 	var scaled_size_l = icon_chle.get_size() * icon_scale
 	scaled_size_l.x *= 2

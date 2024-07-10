@@ -9,12 +9,25 @@ enum GameState {
 }
 
 const PLAYER_CLASS = "BasePlayer"
+const LOADING_SCREEN_PREFAB = preload("res://scenes/prefabs/loading_screen.tscn")
 
 var CurrentState: GameState = GameState.InGame
+var loadingScreen: Control
+var loadThread: Thread
+var mapName: String = ""
+
+var worldRoot: Node
 
 func _ready():
 	# always allow us to process no matter what
 	process_mode = Node.PROCESS_MODE_ALWAYS
+	var CL = CanvasLayer.new()
+	CL.name = "GameUILayer"
+	add_child(CL)
+	
+	loadingScreen = LOADING_SCREEN_PREFAB.instantiate()
+	CL.add_child(loadingScreen)
+	loadingScreen.visible = false
 
 # attempt to spawn the player at a spawn point within the level
 func _spawn_player():
@@ -42,7 +55,7 @@ func _spawn_player():
 		push_error("PLAYER_CLASS is invalid!")
 	else:
 		var player = (load(found_class) as Script).new()
-		add_child(player)
+		worldRoot.add_child(player)
 		player.global_position = spawn_pos
 		player.global_rotation.y = spawn_angle
 
@@ -51,18 +64,117 @@ func change_map(mapName: String):
 		push_error("Couldn't find map by name '" + mapName + "'")
 		return
 	
-	var bspMap = BSP.new()
-	bspMap.read_file("res://maps/" + mapName)
-	
+	loadingScreen.visible = true
 	CurrentState = GameState.Loading
 	get_tree().paused = true
 	
+	self.mapName = mapName
+	
+	loadThread = Thread.new()
+	loadThread.start(_change_map_func)
+
+# spawns in all entities and player on the main thread to finish up
+func _finish_load(bspMap: BSP):
+	loadThread.wait_to_finish()
+	
+	for bspEnt in bspMap.entities:
+		var ent: Node3D
+		
+		# todo: setup a method to register these through other methods
+		match bspEnt.classname:
+			"info_player_start":
+				ent = InfoPlayerStart.new()
+			"light":
+				ent = OmniLight3D.new()
+				
+				var sepValues = bspEnt.properties["_light"].split(" ")
+				if (sepValues.size() > 3):
+					ent.light_color = Color(
+						float(sepValues[0]) / 255.0,
+						float(sepValues[1]) / 255.0,
+						float(sepValues[2]) / 255.0,
+						float(sepValues[3]) / 255.0
+					)
+				else:
+					ent.light_color = Color(
+						float(sepValues[0]) / 255.0,
+						float(sepValues[1]) / 255.0,
+						float(sepValues[2]) / 255.0,
+						1.0
+					)
+			"prop_physics":
+				ent = RigidBody3D.new()
+				var mi3d = MeshInstance3D.new()
+				var col = CollisionShape3D.new()
+				ent.add_child(mi3d)
+				ent.add_child(col)
+				
+				var pathNoExt = bspEnt.properties["model"].get_basename()
+				var mdlConf = KeyValues.new()
+				mdlConf.parse(FileAccess.get_file_as_string("res://" + pathNoExt + "_mdlconf.txt"))
+				
+				for child in mdlConf.children[0].children:
+					match child.key:
+						"ReferenceModel":
+							mi3d.mesh = load("res://models/" + child.value)
+						"PhysicsModel":
+							col.shape = load("res://models/" + child.value).create_convex_shape()
+						"Mass":
+							ent.mass = float(child.value)
+						"CenterOfMass":
+							var split = child.value.split(" ")
+							
+							ent.center_of_mass_mode = RigidBody3D.CENTER_OF_MASS_MODE_CUSTOM
+							ent.center_of_mass = Vector3(
+								float(split[0]),
+								float(split[2]),
+								float(split[1])
+							)
+				
+				if (mi3d.mesh == null):
+					push_error("Invalid model file!!!!")
+					return
+				if (col.shape == null):
+					col.shape = mi3d.mesh.create_convex_shape()
+			"worldspawn":
+				# nothing for now
+				pass
+			_:
+				push_warning("Unknown entity class " + bspEnt.classname + "! Ignoring.")
+		
+		if (ent != null):
+			# add to the world so we can move it around
+			worldRoot.add_child(ent)
+			
+			# set entity rotation and position
+			ent.global_position = Vector3(
+				Global.src_to_gd(bspEnt.origin.x),
+				Global.src_to_gd(bspEnt.origin.z),
+				Global.src_to_gd(bspEnt.origin.y)
+			)
+			ent.global_rotation_degrees = bspEnt.angles
+
+	# mark world root as the current scene
+	get_tree().current_scene.free()
+	get_tree().current_scene = null
+	get_tree().current_scene = worldRoot
+	
+	# spawn in the player and unpause the game
+	print("Spawning player in world")
+	_spawn_player()
+	
+	CurrentState = GameState.InGame
+	get_tree().paused = false
+	loadingScreen.visible = false
+
+func _change_map_func():
+	var bspMap = BSP.new()
+	bspMap.read_file("res://maps/" + mapName)
+	
 	# world spawn also acts as our scene root.
-	var worldRoot = WorldSpawn.new()
-	get_tree().root.add_child(worldRoot)
+	worldRoot = WorldSpawn.new()
 	
 	#region Create World Geo
-	
 	for face in bspMap.faces:
 		var mi3d = MeshInstance3D.new()
 		mi3d.mesh = ArrayMesh.new()
@@ -78,6 +190,7 @@ func change_map(mapName: String):
 		var faceIndices: PackedInt32Array = []
 		var faceUVs: PackedVector2Array = []
 		var faceNormals: PackedVector3Array = []
+		var lightmapUVs: PackedVector2Array = []
 		
 		for i in range(face.firstedge, face.firstedge + face.numedges):
 			var surfEdge = bspMap.surfedges[i]
@@ -132,27 +245,36 @@ func change_map(mapName: String):
 			))
 			
 			var tv = faceTexInf.textureVecs
+			var lv = faceTexInf.lightmapVecs
 			var srcVert = Vector3(
 				Global.gd_to_src(vert.x),
 				Global.gd_to_src(vert.z),
 				Global.gd_to_src(vert.y)
 			)
 			
-			var u = (tv[0].x * srcVert.x + tv[0].y * srcVert.y + tv[0].z * srcVert.z + tv[0].w)
-			var v = (tv[1].x * srcVert.x + tv[1].y * srcVert.y + tv[1].z * srcVert.z + tv[1].w)
+			faceUVs.push_back(Vector2(
+				(tv[0].x * srcVert.x + tv[0].y * srcVert.y + tv[0].z * srcVert.z + tv[0].w) \
+				/ faceTexData.width,
+				
+				(tv[1].x * srcVert.x + tv[1].y * srcVert.y + tv[1].z * srcVert.z + tv[1].w) \
+				/ faceTexData.height
+			))
 			
-			var uv = Vector2(
-				u / faceTexData.width,
-				v / faceTexData.height
-			)
-			faceUVs.push_back(uv)
+			lightmapUVs.push_back(Vector2(
+				(lv[0].x * srcVert.x + lv[0].y * srcVert.y + lv[0].z * srcVert.z + lv[0].w) \
+				- face.LightmapTextureMinsInLuxels[0],
+				
+				(lv[1].x * srcVert.x + lv[1].y * srcVert.y + lv[1].z * srcVert.z + lv[1].w) \
+				- face.LightmapTextureMinsInLuxels[1]
+			))
 		
 		arrays[Mesh.ARRAY_VERTEX] = faceVerts
 		arrays[Mesh.ARRAY_INDEX] = faceIndices
 		arrays[Mesh.ARRAY_TEX_UV] = faceUVs
+		arrays[Mesh.ARRAY_TEX_UV2] = lightmapUVs
 		arrays[Mesh.ARRAY_NORMAL] = faceNormals
 		mi3d.mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays)
-		mi3d.create_convex_collision()
+		mi3d.create_convex_collision.call_deferred()
 		
 		var texName = bspMap.get_texture_name(faceTexData.nameStringTableID).to_lower()
 		mi3d.mesh.surface_set_material(
@@ -160,52 +282,8 @@ func change_map(mapName: String):
 			load("res://materials/" + texName + ".material")
 		)
 		
-		worldRoot.add_child(mi3d)
+		worldRoot.call_deferred("add_child", mi3d)
 	#endregion
 	
-	#region spawn entities
-	for bspEnt in bspMap.entities:
-		var ent: Node3D
-		
-		# todo: setup a method to register these through other methods
-		match bspEnt.classname:
-			"info_player_start":
-				ent = InfoPlayerStart.new()
-			"light":
-				ent = OmniLight3D.new()
-				
-				var sepValues = bspEnt.properties["_light"].split(" ")
-				ent.light_color = Color(
-					float(sepValues[0]) / 255.0,
-					float(sepValues[1]) / 255.0,
-					float(sepValues[2]) / 255.0,
-					float(sepValues[3]) / 255.0
-				)
-			"worldspawn":
-				# nothing for now
-				pass
-			_:
-				push_warning("Unknown entity class " + bspEnt.classname + "! Ignoring.")
-		
-		if (ent != null):
-			# add to the world so we can move it around
-			worldRoot.add_child(ent)
-			
-			# set entity rotation and position
-			ent.global_position = Vector3(
-				Global.src_to_gd(bspEnt.origin.x),
-				Global.src_to_gd(bspEnt.origin.z),
-				Global.src_to_gd(bspEnt.origin.y)
-			)
-			ent.global_rotation_degrees = bspEnt.angles
-	#endregion
-	
-	# mark world root as the current scene
-	get_tree().current_scene.queue_free()
-	get_tree().current_scene = worldRoot
-	
-	# spawn in the player and unpause the game
-	_spawn_player()
-	
-	CurrentState = GameState.InGame
-	get_tree().paused = false
+	get_tree().root.call_deferred("add_child", worldRoot)
+	_finish_load.call_deferred(bspMap)

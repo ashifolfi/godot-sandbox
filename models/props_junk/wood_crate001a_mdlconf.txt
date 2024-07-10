@@ -1,0 +1,6 @@
+"ModelConfig"
+{
+	"Mass" "30"
+	"PhysicsModel" "props_junk/wood_crate001a_physics.res"
+	"ReferenceModel" "props_junk/wood_crate001a_reference.res"
+}

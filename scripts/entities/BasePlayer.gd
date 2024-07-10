@@ -2,6 +2,11 @@ class_name BasePlayer extends CharacterBody3D
 
 var camera: Camera3D
 
+enum MoveMode {
+	Normal,
+	Noclip
+}
+
 var weapons: Array[BaseWeapon]
 var current_weapon: BaseWeapon
 var weapon_model
@@ -20,6 +25,7 @@ var forwardMove := 0.0
 var sideMove := 0.0
 var upMove := 0.0
 var jump_timer := 0.0
+var move_mode := MoveMode.Normal
 
 func _ready():
 	# create the camera using our fov and mark it as current
@@ -27,6 +33,12 @@ func _ready():
 	add_child(camera)
 	camera.fov = 75.0
 	camera.position.y = view_height_stand
+	
+	var hud = Control.new()
+	hud.set_anchors_preset(Control.PRESET_FULL_RECT)
+	hud.add_child(HudCrosshair.new())
+	hud.add_child(HudQuickInfo.new())
+	add_child(hud)
 	
 	# collision mesh
 	var col_shape = CollisionShape3D.new()
@@ -75,7 +87,11 @@ func _do_move_slide():
 func _physics_process(delta):
 	if (Input.is_action_pressed("quit")):
 		get_tree().quit()
-		
+	
+	if (Input.is_action_just_pressed("ui_home")):
+		print("Toggled noclip")
+		move_mode = MoveMode.Normal if move_mode == MoveMode.Noclip else MoveMode.Noclip
+	
 	# capture mouse
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	
@@ -93,11 +109,15 @@ func _physics_process(delta):
 	else:
 		forwardMove = 0.0
 	
-	_get_surface_friction()
-	if (is_grounded()):
-		_full_walk_move()
-	else:
-		_full_toss_move()
+	match move_mode:
+		MoveMode.Normal:
+			_get_surface_friction()
+			if (is_grounded()):
+				_full_walk_move()
+			else:
+				_full_toss_move()
+		MoveMode.Noclip:
+			_jank_ass_noclip_movement()
 	
 	# Weapon Code
 	current_weapon.weapon_idle()
@@ -107,6 +127,29 @@ func _physics_process(delta):
 	
 	if (Input.is_action_pressed("fire_secondary")):
 		current_weapon.fire_secondary(!Input.is_action_just_pressed("fire_secondary"))
+
+func _jank_ass_noclip_movement():
+	var deltaMove = Vector3(
+		cos(rotation.y) * 0.3,
+		sin(rotation.y) * 0.3,
+		sin(camera.rotation.x) * 0.3
+	)
+	
+	if (Input.is_action_pressed("move_left")):
+		position.x -= deltaMove.x
+		position.z += deltaMove.y
+	if (Input.is_action_pressed("move_right")):
+		position.x += deltaMove.x
+		position.z -= deltaMove.y
+		
+	if (Input.is_action_pressed("move_forwards")):
+		position.x -= deltaMove.y
+		position.z -= deltaMove.x
+		position.y += deltaMove.z
+	if (Input.is_action_pressed("move_back")):
+		position.x += deltaMove.y
+		position.z += deltaMove.x
+		position.y -= deltaMove.z
 
 func _get_surface_friction():
 	surfaceFriction = 1.0
