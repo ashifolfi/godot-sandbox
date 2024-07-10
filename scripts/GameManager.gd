@@ -77,6 +77,7 @@ func change_map(mapName: String):
 		var faceVerts: PackedVector3Array = []
 		var faceIndices: PackedInt32Array = []
 		var faceUVs: PackedVector2Array = []
+		var faceNormals: PackedVector3Array = []
 		
 		for i in range(face.firstedge, face.firstedge + face.numedges):
 			var surfEdge = bspMap.surfedges[i]
@@ -124,6 +125,12 @@ func change_map(mapName: String):
 			i += 1
 		
 		for vert in faceVerts:
+			faceNormals.push_back(Vector3(
+				Global.gd_to_src(bspMap.planes[face.planenum].normal.x),
+				Global.gd_to_src(bspMap.planes[face.planenum].normal.z),
+				Global.gd_to_src(bspMap.planes[face.planenum].normal.y)
+			))
+			
 			var tv = faceTexInf.textureVecs
 			var srcVert = Vector3(
 				Global.gd_to_src(vert.x),
@@ -143,6 +150,7 @@ func change_map(mapName: String):
 		arrays[Mesh.ARRAY_VERTEX] = faceVerts
 		arrays[Mesh.ARRAY_INDEX] = faceIndices
 		arrays[Mesh.ARRAY_TEX_UV] = faceUVs
+		arrays[Mesh.ARRAY_NORMAL] = faceNormals
 		mi3d.mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays)
 		mi3d.create_convex_collision()
 		
