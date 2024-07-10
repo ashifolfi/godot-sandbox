@@ -10,6 +10,8 @@ enum GameState {
 
 const PLAYER_CLASS = "BasePlayer"
 const LOADING_SCREEN_PREFAB = preload("res://scenes/prefabs/loading_screen.tscn")
+const SKYBOX_PREFAB = preload("res://scenes/prefabs/skybox.tscn")
+const SKYBOX_MAT = preload("res://materials/tools/toolsskybox.material")
 
 var CurrentState: GameState = GameState.InGame
 var loadingScreen: Control
@@ -17,17 +19,35 @@ var loadThread: Thread
 var mapName: String = ""
 
 var worldRoot: Node
+var skyVP: SubViewport
 
 func _ready():
 	# always allow us to process no matter what
 	process_mode = Node.PROCESS_MODE_ALWAYS
+	
 	var CL = CanvasLayer.new()
 	CL.name = "GameUILayer"
 	add_child(CL)
 	
+	skyVP = SubViewport.new()
+	skyVP.own_world_3d = true
+	skyVP.world_3d = World3D.new()
+	skyVP.add_child(SKYBOX_PREFAB.instantiate())
+	add_child(skyVP)
+	SKYBOX_MAT.set_shader_parameter("sky_texture", skyVP.get_texture())
+	
 	loadingScreen = LOADING_SCREEN_PREFAB.instantiate()
 	CL.add_child(loadingScreen)
 	loadingScreen.visible = false
+
+func _process(delta):
+	skyVP.size = get_viewport().get_visible_rect().size
+
+func _physics_process(delta):
+	var skyCam = skyVP.get_node("skybox/Camera3D")
+	var mainCam = get_viewport().get_camera_3d()
+	if (mainCam != null and skyCam != null):
+		skyCam.global_rotation = mainCam.global_rotation
 
 # attempt to spawn the player at a spawn point within the level
 func _spawn_player():
@@ -86,6 +106,24 @@ func _finish_load(bspMap: BSP):
 				ent = InfoPlayerStart.new()
 			"light":
 				ent = OmniLight3D.new()
+				
+				var sepValues = bspEnt.properties["_light"].split(" ")
+				if (sepValues.size() > 3):
+					ent.light_color = Color(
+						float(sepValues[0]) / 255.0,
+						float(sepValues[1]) / 255.0,
+						float(sepValues[2]) / 255.0,
+						float(sepValues[3]) / 255.0
+					)
+				else:
+					ent.light_color = Color(
+						float(sepValues[0]) / 255.0,
+						float(sepValues[1]) / 255.0,
+						float(sepValues[2]) / 255.0,
+						1.0
+					)
+			"light_environment":
+				ent = DirectionalLight3D.new()
 				
 				var sepValues = bspEnt.properties["_light"].split(" ")
 				if (sepValues.size() > 3):

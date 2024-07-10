@@ -1,0 +1,145 @@
+Loading C:\Users\kemon\source\sandbox\maps\src\testmap.vmf
+Map revision 156
+fixing up env_cubemap materials on brush sides...
+ProcessBlock_Thread : 0...1...2...3...4...5...6...7...8...9...10 (0)
+ProcessBlock_Thread : 0...1...2...3...4...5...6...7...8...9...10 (0)
+Processing areas...
+done (0)
+Building Faces...done (0)
+FixTjuncs...
+PruneNodes...
+WriteBSP...
+done (0)
+writing C:\Users\kemon\source\sandbox\maps\src\testmap.prt...
+Building visibility clusters...
+AutoVisClustering (threshold=-1) matched 0 leafs.
+done (0)
+Finding displacement neighbors...
+Finding lightmap sample positions...
+Building Physics collision data...
+done (0) (357833 bytes)
+Placing detail props : 0...1...2...3...4...5...6...7...8...9...10
+Compacting texture/material tables...
+Reduced 100 texinfos to 70
+Reduced 5 texdatas to 5 (107 bytes to 107)
+Writing C:\Users\kemon\source\sandbox\maps\src\testmap.bsp
+MSG_FILEWRITE - Filesystem was asked to write to 'c:\users\kemon\source\sandbox\maps\src\testmap.bsp', but we don't own that location. Allowing...
+0 seconds elapsed
+8 threads
+reading c:\users\kemon\source\sandbox\maps\src\testmap.bsp
+reading c:\users\kemon\source\sandbox\maps\src\testmap.prt
+ 217 portalclusters
+ 466 numportals
+BasePortalVis : 0...1...2...3...4...5...6...7...8...9...10 (0)
+PortalFlow : 0...1...2...3...4...5...6...7...8...9...10 (0)
+Optimized: 263 visible clusters (2.78%)
+Total clusters visible: 9468
+Average clusters visible: 43
+Building PAS...
+Average clusters audible: 154
+visdatasize:11931  compressed from 13888
+writing c:\users\kemon\source\sandbox\maps\src\testmap.bsp
+MSG_FILEWRITE - Filesystem was asked to write to 'c:\users\kemon\source\sandbox\maps\src\testmap.bsp', but we don't own that location. Allowing...
+0 seconds elapsed
+[Reading texlights from 'lights.rad']
+[59 texlights parsed from 'lights.rad']
+
+Loading c:\users\kemon\source\sandbox\maps\src\testmap.bsp
+724 faces
+415841 square feet [59881124.00 square inches]
+0 Displacements
+0 Square Feet [0.00 Square Inches]
+724 patches before subdivision
+54302 patches after subdivision
+145 direct lights
+BuildFacelights : 0...1...2...3...4...5...6...7...8...9...10 (54)
+BuildVisLeafs : 0...1...2...3...4...5...6...7...8...9...10 (1)
+transfers 5311189, max 296
+transfer lists:  40.5 megs
+GatherLight : 0...1...2...3...4...5...6...7...8...9...10 (0)
+	Bounce #1 added RGB(286182, 458491, 190809)
+GatherLight : 0...1...2...3...4...5...6...7...8...9...10 (0)
+	Bounce #2 added RGB(72496, 113263, 43997)
+GatherLight : 0...1...2...3...4...5...6...7...8...9...10 (0)
+	Bounce #3 added RGB(18234, 28209, 10659)
+GatherLight : 0...1...2...3...4...5...6...7...8...9...10 (0)
+	Bounce #4 added RGB(4637, 7050, 2601)
+GatherLight : 0...1...2...3...4...5...6...7...8...9...10 (0)
+	Bounce #5 added RGB(1188, 1768, 639)
+GatherLight : 0...1...2...3...4...5...6...7...8...9...10 (0)
+	Bounce #6 added RGB(307, 444, 158)
+GatherLight : 0...1...2...3...4...5...6...7...8...9...10 (0)
+	Bounce #7 added RGB(80, 112, 39)
+GatherLight : 0...1...2...3...4...5...6...7...8...9...10 (0)
+	Bounce #8 added RGB(21, 28, 10)
+GatherLight : 0...1...2...3...4...5...6...7...8...9...10 (0)
+	Bounce #9 added RGB(5, 7, 2)
+GatherLight : 0...1...2...3...4...5...6...7...8...9...10 (0)
+	Bounce #10 added RGB(1, 2, 1)
+GatherLight : 0...1...2...3...4...5...6...7...8...9...10 (0)
+	Bounce #11 added RGB(0, 0, 0)
+Build Patch/Sample Hash Table(s).....Done<0.0211 sec>
+FinalLightFace : 0...1...2...3...4...5...6...7...8...9...10 (2)
+FinalLightFace Done
+0 of 0 (0% of) surface lights went in leaf ambient cubes.
+ThreadComputeLeafAmbient : 0...1...2...3...4...5...6...7...8...9...10 (1)
+Writing leaf ambient...done
+Ready to Finish
+
+Object names       Objects/Maxobjs  Memory / Maxmem  Fullness 
+------------       ---------------  ---------------  -------- 
+models                   1/65536          48/3145728  ( 0.0%) 
+brushes                348/131072       4176/1572864  ( 0.3%) 
+brushsides            2396/1310720     38336/20971520 ( 0.2%) 
+planes                 568/1048576     11360/20971520 ( 0.1%) 
+vertexes              1060/1048576     12720/12582912 ( 0.1%) 
+nodes                  404/1048576     19392/50331648 ( 0.0%) 
+texinfos                70/0            5040/0        ( 0.0%) 
+texdata                  5/16384         160/524288   ( 0.0%) 
+dispinfos                0/262144          0/60817408 ( 0.0%) 
+disp_verts               0/0               0/0        ( 0.0%) 
+disp_tris                0/0               0/0        ( 0.0%) 
+disp_multiblend          0/0               0/0        ( 0.0%) 
+disp_lmsamples           0/0               0/0        ( 0.0%) 
+faces                  724/1048576     52128/75497472 ( 0.1%) 
+hdr faces              724/1048576     52128/75497472 ( 0.1%) 
+origfaces              440/1048576     31680/75497472 ( 0.0%) 
+facebrushes            117/0             468/0        ( 0.0%) 
+facebrushlists         724/0            5792/0        ( 0.0%) 
+leaves                 406/1048576     22736/58720256 ( 0.0%) 
+leaffaces              861/1048576      3444/4194304  ( 0.1%) 
+leafbrushes            460/1048576      1840/4194304  ( 0.0%) 
+areas                    2/65536          16/524288   ( 0.0%) 
+surfedges             5093/8192000     20372/32768000 ( 0.1%) 
+edges                 2905/4096000     23240/32768000 ( 0.1%) 
+LDR worldlights          0/0               0/0        ( 0.0%) 
+HDR worldlights        144/0           14400/0        ( 0.0%) 
+leafwaterdata            0/32768           0/393216   ( 0.0%) 
+waterstrips             54/1048576      1080/20971520 ( 0.0%) 
+waterverts               0/1048576         0/12582912 ( 0.0%) 
+waterindices           867/1048576      3468/4194304  ( 0.1%) 
+cubemapsamples           0/16384           0/262144   ( 0.0%) 
+overlays                 0/16384           0/5832704  ( 0.0%) 
+LDR lightdata         [variable]           0/0        ( 0.0%) 
+HDR lightdata         [variable]     1848412/0        ( 0.0%) 
+visdata               [variable]       11931/268435456 ( 0.0%) 
+entdata               [variable]       59344/393216   (15.1%) 
+LDR ambient table      406/1048576      3248/8388608  ( 0.0%) 
+HDR ambient table      406/1048576      3248/8388608  ( 0.0%) 
+LDR leaf ambient       406/1048576     11368/29360128 ( 0.0%) 
+HDR leaf ambient      2761/1048576     77308/29360128 ( 0.3%) 
+occluders                0/0               0/0        ( 0.0%) 
+occluder polygons        0/0               0/0        ( 0.0%) 
+occluder vert ind        0/0               0/0        ( 0.0%) 
+detail props          [variable]           1/12       ( 8.3%) 
+static props          [variable]           1/12       ( 8.3%) 
+pakfile               [variable]       74426/0        ( 0.0%) 
+physics               [variable]      357833/4194304  ( 8.5%) 
+physics terrain       [variable]           4/1048576  ( 0.0%) 
+
+Level flags = 7e
+
+Total triangle count: 1911
+Writing c:\users\kemon\source\sandbox\maps\src\testmap.bsp
+MSG_FILEWRITE - Filesystem was asked to write to 'c:\users\kemon\source\sandbox\maps\src\testmap.bsp', but we don't own that location. Allowing...
+58 seconds elapsed

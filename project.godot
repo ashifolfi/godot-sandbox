@@ -13,6 +13,7 @@ config_version=5
 config/name="sandbox"
 run/main_scene="res://scenes/gamemenu.tscn"
 config/features=PackedStringArray("4.2", "Forward Plus")
+boot_splash/image="res://materials/console/background_loading.png"
 config/icon="res://icon.svg"
 
 [autoload]
