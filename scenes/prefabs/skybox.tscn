@@ -1,0 +1,69 @@
+[gd_scene load_steps=14 format=3 uid="uid://du618b4juglgn"]
+
+[ext_resource type="Texture2D" uid="uid://cefj7xvi57jc0" path="res://materials/skies/sky_day01_01lf.png" id="1_njgss"]
+[ext_resource type="Texture2D" uid="uid://8sebuoksj4ex" path="res://materials/skies/sky_day01_01rt.png" id="2_mu632"]
+[ext_resource type="Texture2D" uid="uid://cqlv1jww00pre" path="res://materials/skies/sky_day01_01up.png" id="3_h8hsm"]
+[ext_resource type="Texture2D" uid="uid://0052k1psrwbs" path="res://materials/skies/sky_day01_01dn.png" id="4_nrswm"]
+[ext_resource type="Texture2D" uid="uid://c1ss5f08cmq08" path="res://materials/skies/sky_day01_01bk.png" id="5_nki22"]
+[ext_resource type="Texture2D" uid="uid://5rpr4k2hm6o2" path="res://materials/skies/sky_day01_01ft.png" id="6_rectq"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tewme"]
+shading_mode = 0
+albedo_texture = ExtResource("1_njgss")
+
+[sub_resource type="QuadMesh" id="QuadMesh_tt3og"]
+size = Vector2(6, 6)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_s3d0f"]
+shading_mode = 0
+albedo_texture = ExtResource("2_mu632")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8try6"]
+shading_mode = 0
+albedo_texture = ExtResource("3_h8hsm")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_usda1"]
+shading_mode = 0
+albedo_texture = ExtResource("4_nrswm")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_21tfr"]
+shading_mode = 0
+albedo_texture = ExtResource("5_nki22")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_i7hgi"]
+shading_mode = 0
+albedo_texture = ExtResource("6_rectq")
+
+[node name="skybox" type="Node3D"]
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -3)
+material_override = SubResource("StandardMaterial3D_tewme")
+mesh = SubResource("QuadMesh_tt3og")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="."]
+transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 0, 3)
+material_override = SubResource("StandardMaterial3D_s3d0f")
+mesh = SubResource("QuadMesh_tt3og")
+
+[node name="MeshInstance3D4" type="MeshInstance3D" parent="."]
+transform = Transform3D(-1, -8.74228e-08, 3.82137e-15, 0, -4.37114e-08, -1, 8.74228e-08, -1, 4.37114e-08, 0, 3, 1.31134e-07)
+material_override = SubResource("StandardMaterial3D_8try6")
+mesh = SubResource("QuadMesh_tt3og")
+
+[node name="MeshInstance3D5" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, -3, -1.31134e-07)
+material_override = SubResource("StandardMaterial3D_usda1")
+mesh = SubResource("QuadMesh_tt3og")
+
+[node name="MeshInstance3D6" type="MeshInstance3D" parent="."]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 3, -1.31134e-07, 1.31134e-07)
+material_override = SubResource("StandardMaterial3D_21tfr")
+mesh = SubResource("QuadMesh_tt3og")
+
+[node name="MeshInstance3D7" type="MeshInstance3D" parent="."]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -3, 1.31134e-07, -1.31134e-07)
+material_override = SubResource("StandardMaterial3D_i7hgi")
+mesh = SubResource("QuadMesh_tt3og")
+
+[node name="Camera3D" type="Camera3D" parent="."]

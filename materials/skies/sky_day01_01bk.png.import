@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cexq2gjv21j4q"
-path.s3tc="res://.godot/imported/dev_measurecrate01.png-67e9c27e14aceeae88f621a2274a68d6.s3tc.ctex"
+uid="uid://c1ss5f08cmq08"
+path.s3tc="res://.godot/imported/sky_day01_01bk.png-3f814200f3cb1000c8c0b473d61fbd1d.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://materials/dev/dev_measurecrate01.png"
-dest_files=["res://.godot/imported/dev_measurecrate01.png-67e9c27e14aceeae88f621a2274a68d6.s3tc.ctex"]
+source_file="res://materials/skies/sky_day01_01bk.png"
+dest_files=["res://.godot/imported/sky_day01_01bk.png-3f814200f3cb1000c8c0b473d61fbd1d.s3tc.ctex"]
 
 [params]
 
