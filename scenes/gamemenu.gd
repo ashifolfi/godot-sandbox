@@ -1,7 +1,7 @@
 extends Control
 
 func _on_testmap_pressed():
-	get_tree().change_scene_to_file("res://scenes/maps/devtest.tscn")
+	GameManager.change_map("src/testmap.bsp")
 
 func _on_quit_pressed():
 	get_tree().quit()

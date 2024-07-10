@@ -20,6 +20,7 @@ var texinfo: Array[BSPTexInfo]
 var texdata: Array[BSPTexData]
 var texdatastringdata: PackedByteArray
 var texdatastringtable: PackedInt32Array
+var entities: Array[BSPEntity]
 
 enum {
 	Lump_Entities,
@@ -148,6 +149,17 @@ func read_file(path):
 	file.seek(lump_inf[Lump_TexDataStringTable].file_ofs)
 	while (file.get_position() < lump_inf[Lump_TexDataStringTable].file_ofs + lump_inf[Lump_TexDataStringTable].file_len):
 		texdatastringtable.push_back(file.get_32())
+	
+	file.seek(lump_inf[Lump_Entities].file_ofs)
+	var entData = file.get_buffer(lump_inf[Lump_Entities].file_len).get_string_from_utf8()
+	
+	# sneakily translate into keyvalues data, it's similar enough to pass
+	entData = entData.replace("{", '"entity" {')
+	var entListKV = KeyValues.new()
+	entListKV.parse(entData)
+	
+	for childEnt in entListKV.children:
+		entities.push_back(BSPEntity.new(childEnt))
 
 func get_texture_name(index: int) -> String:
 	var baOff = texdatastringtable[index]
@@ -181,13 +193,6 @@ class BSPPlane:
 		)
 		dist = file.get_float()
 		type = file.get_32()
-	
-	func _to_string():
-		return "PLANE(" \
-		+ "normal: " + str(normal) + ", " \
-		+ "dist: " + str(dist) + ", " \
-		+ "type: " + str(type) \
-		+ ")"
 
 class BSPFace:
 	var planenum: int # unsigned
@@ -279,6 +284,26 @@ class BSPTexData:
 		height = file.get_32()
 		view_width = file.get_32()
 		view_height = file.get_32()
+
+class BSPEntity:
+	var classname: String
+	var origin: Vector3
+	var angles: Vector3
+	var properties: Dictionary
+	
+	func _init(kve: KeyValues.KV1Element):
+		for child in kve.children:
+			match child.key:
+				"classname":
+					classname = child.value
+				"origin":
+					var sepVal = child.value.split(" ")
+					origin = Vector3(float(sepVal[0]), float(sepVal[1]), float(sepVal[2]))
+				"anngles":
+					var sepVal = child.value.split(" ")
+					angles = Vector3(float(sepVal[0]), float(sepVal[1]), float(sepVal[2]))
+				_:
+					properties[child.key] = child.value
 
 class LumpInfo:
 	var file_ofs: int

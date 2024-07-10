@@ -17,8 +17,9 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-DevUI="*res://scenes/devui.tscn"
 Global="*res://scripts/globals.gd"
+GameManager="*res://scripts/GameManager.gd"
+DevUI="*res://scenes/devui.tscn"
 
 [display]
 
